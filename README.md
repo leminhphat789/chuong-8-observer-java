@@ -1,31 +1,31 @@
-# bai tap chuong 8
+# Bài tập chương 8
 
-## bai 8.1 - push
+## Bài 8.1 – Push
 
-Deck quan ly hai danh sach observer. Khi rut bai, Deck gui la vua rut cho DrawLogger va gui so la moi cho SizeStatus. Khi dat mot la len bo bai, chi SizeStatus nhan thong bao. Khi xao bai, bo bai duoc tao lai du 52 la. Neu so la thay doi thi SizeStatus in ra 52.
+`Deck` quản lý hai danh sách observer. Khi rút bài, `Deck` gửi lá vừa rút cho `DrawLogger` và gửi số lá còn lại cho `SizeStatus`. Khi đặt một lá lên bộ bài, chỉ `SizeStatus` nhận thông báo. Khi xáo bài, bộ bài được tạo lại đủ 52 lá. Nếu số lá thay đổi thì `SizeStatus` in ra 52.
 
-## bai 8.2 - pull
+## Bài 8.2 – Pull
 
-Deck bao cho observer biet co thay doi. DrawLogger goi lastDrawn() qua DrawView, con SizeStatus goi size() qua SizeView. Deck luu la vua rut truoc khi bao cho DrawLogger. Moi observer chi thay phuong thuc doc minh can, nen khong the goi draw(), push() hay shuffle() qua view nhan duoc.
+`Deck` báo cho observer biết khi có thay đổi. `DrawLogger` gọi `lastDrawn()` qua `DrawView` để lấy lá vừa rút, còn `SizeStatus` gọi `size()` qua `SizeView` để lấy số lá còn lại. `Deck` lưu lá vừa rút trước khi báo cho `DrawLogger`. Mỗi observer chỉ thấy phương thức đọc mình cần nên không thể gọi `draw()`, `push()` hay `shuffle()` qua giao diện nhận được.
 
-## bai 8.3 - observer o lop cha
+## Bài 8.3 – Observer ở lớp cha
 
-AbstractObservableDeck quan ly viec dang ky, huy dang ky va gui thong bao. Deck ke thua lop nay va goi cac ham thong bao sau khi thay doi bo bai. Bai nay dung lai observer cua bai 8.1.
+`AbstractObservableDeck` quản lý việc đăng ký, hủy đăng ký và gửi thông báo. `Deck` kế thừa lớp này và gọi phương thức thông báo sau khi thay đổi bộ bài. Bài này dùng lại các observer của bài 8.1.
 
-- uu diem: phan quan ly observer nam chung mot cho, cac lop con co the dung lai.
-- nhuoc diem: Deck phai ke thua lop cha nay va khong the ke thua them mot lop khac. Khi them thao tac moi vao Deck, van phai nho goi ham thong bao neu co thay doi.
+- **Ưu điểm.** Phần quản lý observer nằm ở một chỗ nên các lớp con có thể dùng lại.
+- **Nhược điểm.** Khi đã kế thừa `AbstractObservableDeck`, `Deck` không thể kế thừa thêm một lớp khác. Khi thêm thao tác làm thay đổi bộ bài, người viết vẫn phải nhớ gọi phương thức thông báo phù hợp.
 
-## bai 8.4 - observer o lop con
+## Bài 8.4 – Observer ở lớp con
 
-Deck giu cac thao tac co ban. ObservableDeck ke thua Deck, goi lai thao tac cua lop cha roi thong bao cho observer. Bai nay cung dung lai observer cua bai 8.1.
+`Deck` giữ các thao tác cơ bản. `ObservableDeck` kế thừa `Deck`, gọi phương thức của lớp cha rồi thông báo cho observer. Bài này cũng dùng lại các observer của bài 8.1.
 
-- uu diem: co the dung Deck rieng hoac dung ObservableDeck khi can theo doi.
-- nhuoc diem: lop con phai theo sat cac thao tac cua lop cha. Neu lop cha them thao tac lam doi so la, lop con co the bo sot thong bao.
-- luu y: khi tao doi tuong, ham khoi tao cua Deck goi shuffle(). Luc nay danh sach observer cua lop con chua duoc khoi tao nen phai kiem tra truoc khi gui thong bao.
+- **Ưu điểm.** Có thể dùng `Deck` riêng hoặc dùng `ObservableDeck` khi cần theo dõi bộ bài.
+- **Nhược điểm.** Lớp con phải theo sát các thao tác của lớp cha. Nếu lớp cha có thêm thao tác làm đổi số lá, lớp con có thể bỏ sót thông báo.
+- **Lưu ý khi khởi tạo.** Hàm khởi tạo của `Deck` gọi `shuffle()`. Lúc này danh sách observer của lớp con chưa được khởi tạo nên cần kiểm tra trước khi gửi thông báo.
 
-## cach chay
+## Cách chạy
 
-Mo PowerShell tai thu muc Chapter8, dung JDK 21 tro len.
+Mở PowerShell tại thư mục `Chapter8` và chạy các lệnh sau với JDK 21 trở lên.
 
 ```powershell
 New-Item -ItemType Directory -Force out | Out-Null
@@ -37,4 +37,4 @@ java -ea -cp out ex83.Main
 java -ea -cp out ex84.Main
 ```
 
-Ca bon bai deu thu cung mot tinh huong. Lan rut dau in la vua rut va so 51. Dat lai la do thi in 52. Lan rut tiep theo lai in la vua rut va so 51. Xao bo bai thi in 52. Xao them lan nua khi da du 52 la thi khong in them dong nao.
+Cả bốn bài đều thử cùng một tình huống. Lần rút đầu tiên in ra lá vừa rút và số lá còn lại là 51. Đặt lá đó trở lại bộ bài thì số lá tăng lên 52. Lần rút tiếp theo lại in ra lá vừa rút và số 51. Xáo bài lần đầu đưa bộ bài về đủ 52 lá nên chương trình in ra 52. Xáo thêm lần nữa khi đã đủ 52 lá thì chương trình không in thêm dòng nào.
